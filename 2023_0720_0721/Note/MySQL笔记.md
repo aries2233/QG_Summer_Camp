@@ -159,19 +159,96 @@ SELECT * FROM 表名 WHERE 字段 LIKE '%X';
 
 ![06e1093eaa0ac1f1b6b53be5837e036](https://cdn.jsdelivr.net/gh/aries2233/image_0/06e1093eaa0ac1f1b6b53be5837e036.png)
 
-```
-
-```
-
 
 
 #### DCL数据控制>创建用户，用户权限
 
+##### 管理用户
 
+```sql
+# 查询用户
+USE mysql;
+SELECT * FROM user;
+# 创建用户
+CREAT USER '用户名' @ '主机名' IDENTIFIED BY '密码';
+# 在任意主机 主机名->%
+# 修改用户密码
+ALTER USER '用户名' @ '主机名' IDENTIFIED WITH mysql_native_password BY '新密码';
+# 删除用户
+DROP USER '用户名' @ '主机名';
+```
+
+权限控制
+
+```sql
+# 查询权限
+SHOW GRANTS FOR '用户名' @ '主机名';
+# 授予权限
+GRANT 权限列表 ON 数据库名.表名 TO '用户名' @ '主机名';
+# 撤销权限
+REVOKE 权限列表 ON 数据库名.表名 FROM '用户名' @ '主机名';
+```
+
+![bb058744d4c9b575aa76daaad771a77](https://cdn.jsdelivr.net/gh/aries2233/image_0/bb058744d4c9b575aa76daaad771a77.png)
 
 ### 函数
 
+字符串函数
+
+![0fb1ffcd1765111a3ad665628af388c](https://cdn.jsdelivr.net/gh/aries2233/image_0/0fb1ffcd1765111a3ad665628af388c.png)
+
+数值函数
+
+![54fc5b1939b3899e013829ca0b60c4d](https://cdn.jsdelivr.net/gh/aries2233/image_0/54fc5b1939b3899e013829ca0b60c4d.png)
+
+日期函数
+
+![ce38947c1aa2231054c88eefa74030e](https://cdn.jsdelivr.net/gh/aries2233/image_0/ce38947c1aa2231054c88eefa74030e.png)
+
+流程函数
+
+![a2c7d2294d403fe4704e818cfa90933](https://cdn.jsdelivr.net/gh/aries2233/image_0/a2c7d2294d403fe4704e818cfa90933.png)
+
+```sql
+select
+	name,
+	(case workaddress when '北京' then '一线城市' when '上海' then '一线城市' else '二线城市' end) as '工作地址' from emp;
+```
+
+
+
 ### 约束
+
+限制存储在表中的数据
+
+![d81d2a5bb748df598a2b59e4202594b](https://cdn.jsdelivr.net/gh/aries2233/image_0/d81d2a5bb748df598a2b59e4202594b.png)
+
+```sql
+create table emp(
+	id int primary key auto_increment comment '编号',
+	name varchar(10) not null unique comment '姓名',
+    status char(1) default '1' comment '状态' # 默认值为1
+)comment '用户表';
+```
+
+##### 外键约束
+
+![0549607a7ebe75ae9e669a30edf2814](https://cdn.jsdelivr.net/gh/aries2233/image_0/0549607a7ebe75ae9e669a30edf2814.png)
+
+```sql
+# 添加外键
+CREATE TABLE 表名(
+	字段名 数据类型, 
+    ...
+    [CONSTRAINT][外键名称]FOREIGN KEY (外键字段名) REFERENCES 主表(主表列名)
+);
+ALTER TABLE 表名 ADD CONSTRAINT 外键名称 FOREIGN KEY (外键字段名) REFERENCES 主表(主表列名);
+
+# 删除外键
+ALTER TABLE 表名 DROP FOREIGN KEY 外键名称;
+```
+
+
 
 ### 多表查询
 
